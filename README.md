@@ -162,7 +162,7 @@ namespace app\controller;
 
 use think\Request;
 
-class Test extends Controller
+class Test 
 {
 
     /**
