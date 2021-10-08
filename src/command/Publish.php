@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace yzh52521\Think\command;
+namespace yzh52521\captcha\command;
 
 use think\console\Command;
 use think\console\Input;

@@ -1,7 +1,7 @@
 <?php
 
-use yzh52521\think\facade\GridCaptcha as GridCaptchaFacades;
-use yzh52521\think\GridCaptcha as GridCaptcha;
+use yzh52521\captcha\facade\GridCaptcha as GridCaptchaFacades;
+use yzh52521\captcha\GridCaptcha as GridCaptcha;
 
 if (!function_exists('grid_captcha')) {
     /**

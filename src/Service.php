@@ -1,9 +1,9 @@
 <?php
 
-namespace yzh52521\Think;
+namespace yzh52521\captcha;
 
-use yzh52521\Think\command\Publish;
-use yzh52521\Think\GridCaptcha;
+use yzh52521\captcha\command\Publish;
+use yzh52521\captcha\GridCaptcha;
 
 class Service extends \think\Service
 {

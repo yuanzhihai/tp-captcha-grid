@@ -96,7 +96,7 @@ class Test
      */
     public function facade()
     {
-        return \Deletedb\Laravel\Facades\GridCaptcha::get([
+        return \yzh52521\captcha\facade\GridCaptcha::get([
             'mobile' => '100xxxxx121'
         ]);
     }
@@ -107,7 +107,7 @@ class Test
      */
     public function object()
     {
-        $captcha = new \Deletedb\Laravel\GridCaptcha();
+        $captcha = new \yzh52521\captcha\GridCaptcha();
         return $captcha->get([
             'mobile' => '100xxxxx121'
         ]);
@@ -199,14 +199,14 @@ class TestController extends Controller
         /**
          * 传参效验
          */
-        if ($captcha_data = \Deletedb\Laravel\Facades\GridCaptcha::check('Qh8kHYF4C....', '1540') === false) {
+        if ($captcha_data = \yzh52521\captcha\facade\GridCaptcha::check('Qh8kHYF4C....', '1540') === false) {
             return response()->json(['message' => '验证码错误', 'code' => 401]);
         }
 
         /**
          * 传递 Request 对象效验
          */
-        if ($captcha_data = \Deletedb\Laravel\Facades\GridCaptcha::checkRequest($request)) {
+        if ($captcha_data = \yzh52521\captcha\facade\GridCaptcha::checkRequest($request)) {
             return response()->json(['message' => '验证码错误', 'code' => 401]);
         }
 
@@ -220,7 +220,7 @@ class TestController extends Controller
      */
     public function objectCheck(Request $request)
     {
-        $captcha = new \Deletedb\Laravel\GridCaptcha();
+        $captcha = new \yzh52521\captcha\GridCaptcha();
         /**
          * 传参效验
          */

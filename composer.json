@@ -21,7 +21,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "yzh52521\\Think": "src/"
+            "yzh52521\\captcha\\": "src/"
         },
         "files": [
             "src/helpers.php"

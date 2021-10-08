@@ -1,6 +1,6 @@
 <?php
 
-namespace yzh52521\Think\facade;
+namespace yzh52521\captcha\facade;
 use think\Request;
 
 /**
