@@ -6,6 +6,7 @@ namespace yzh52521\captcha;
 
 use think\facade\Cache;
 use think\helper\Str;
+use think\Request;
 
 class GridCaptcha
 {
@@ -181,11 +182,15 @@ class GridCaptcha
      */
     public function checkRequest(Request $request, bool $checkAndDelete = true)
     {
-        $input = $request->validate([
-                                        $this->captchaKeyString     => "required|string|length:$this->captchaKeyLength",
-                                        $this->captchaKeyCodeString => 'required|integer|between:1,4',
-                                    ]);
-        return $this->check($input[$this->captchaKeyString], $input[$this->captchaKeyCodeString], $checkAndDelete);
+        $validate = validate(
+            [
+                $this->captchaKeyString     => "required|string|size:$this->captchaKeyLength",
+                $this->captchaKeyCodeString => 'required|integer|digits_between:1,4',
+            ]
+        );
+        if (!$validate->check($request)) {
+            return false;
+        }
     }
 
     /**
