@@ -159,7 +159,7 @@ class GridCaptcha
         $captcha_data = $checkAndDelete
             ? Cache::pull("$this->cacheKey:data:" . $captchaKey, false)
             : Cache::get("$this->cacheKey:data:" . $captchaKey, false);
-        if ($captcha_data === false) {
+        if ($captcha_data === false || $captcha_data===null) {
             return false;
         }
         //判断验证码是正确
