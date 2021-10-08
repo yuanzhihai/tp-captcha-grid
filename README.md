@@ -255,12 +255,13 @@ class Test extends Controller
 - 本地化提示
 
  ```
-app/lang/zh_CN/grid-captcha.php
+app/lang/zh-cn.php
 ```
 ```php
 <?php
 //一个图片目录对应一个提示
 return [
+ 'grid-captcha' => [
     'banmaxian' => '斑马线',
     'gongjiaoche' => '公交车',
     'heiban' => '黑板',
@@ -271,6 +272,7 @@ return [
     'shutiao' => '薯条',
     'xiaofangshuan' => '消防栓',
     'zhenglong' => '蒸笼',
+    ]
 ];
 ```
 
