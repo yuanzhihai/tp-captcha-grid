@@ -176,14 +176,14 @@ class TestController extends Controller
          * 传参效验
          */
         if ($captcha_data = grid_captcha()->check('Qh8kHYF4C....', '1540') === false) {
-            return response()->json(['message' => '验证码错误', 'code' => 401]);
+            return json(['message' => '验证码错误', 'code' => 401]);
         }
 
         /**
          * 传递 Request 对象效验
          */
         if ($captcha_data = grid_captcha()->checkRequest($request)) {
-            return response()->json(['message' => '验证码错误', 'code' => 401]);
+            return json(['message' => '验证码错误', 'code' => 401]);
         }
 
         return $captcha_data;
