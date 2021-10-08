@@ -184,8 +184,8 @@ class GridCaptcha
     {
         $validate = validate(
             [
-                $this->captchaKeyString     => "required|string|size:$this->captchaKeyLength",
-                $this->captchaKeyCodeString => 'required|integer|digits_between:1,4',
+                $this->captchaKeyString     => "required|string|length:$this->captchaKeyLength",
+                $this->captchaKeyCodeString => 'required|integer|between:1,4',
             ]
         );
         if (!$validate->check($request)) {
