@@ -36,10 +36,8 @@
     "minimum-stability": "dev",
     "extra": {
         "think": {
-           "config":{
-                   "gridcaptcha": "src/config/gridcaptcha.php"
-                 },
-        "services": ["yzh52521\\captcha\\Service" ]
+           "config":{"gridcaptcha": "src/config/gridcaptcha.php"},
+           "services": ["yzh52521\\captcha\\Service" ]
         }
     }
 }

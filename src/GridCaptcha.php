@@ -137,7 +137,7 @@ class GridCaptcha
         $this->captchaKey  = Str::random($this->captchaKeyLength);
         $this->imageFile   = Cache::remember("$this->cacheKey:path", function () {
             return $this->getImageFile();
-        },604800);
+        },                                   604800);
         Cache::set("$this->cacheKey:data:$this->captchaKey", [
             'captcha_key'  => $this->captchaKey,
             'captcha_code' => $this->captchaCode,
@@ -159,7 +159,7 @@ class GridCaptcha
         $captcha_data = $checkAndDelete
             ? Cache::pull("$this->cacheKey:data:" . $captchaKey, false)
             : Cache::get("$this->cacheKey:data:" . $captchaKey, false);
-        if ($captcha_data === false || $captcha_data===null) {
+        if ($captcha_data === false || $captcha_data === null) {
             return false;
         }
         //判断验证码是正确
@@ -191,6 +191,7 @@ class GridCaptcha
         if (!$validate->check($request)) {
             return false;
         }
+        return $this->check($request[$this->captchaKeyString], $request[$this->captchaKeyCodeString], $checkAndDelete);
     }
 
     /**
@@ -275,7 +276,9 @@ class GridCaptcha
                     "$this->cacheKey:file:$path",
                     function () use ($path) {
                         return file_get_contents($path);
-                    }, 604800)
+                    },
+                    604800
+                )
             );
             imagecopyresized(
                 $background,
