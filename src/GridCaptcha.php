@@ -1,7 +1,11 @@
 <?php
 
 declare(strict_types=1);
+
 namespace yzh52521\captcha;
+
+use think\facade\Cache;
+use think\helper\Str;
 
 class GridCaptcha
 {
@@ -130,9 +134,9 @@ class GridCaptcha
         $this->captchaData = $captchaData;
         $this->captchaCode = substr(str_shuffle('012345678'), 0, 4);
         $this->captchaKey  = Str::random($this->captchaKeyLength);
-        $this->imageFile   = Cache::remember("$this->cacheKey:path", 604800, function () {
+        $this->imageFile   = Cache::remember("$this->cacheKey:path", function () {
             return $this->getImageFile();
-        });
+        },604800);
         Cache::set("$this->cacheKey:data:$this->captchaKey", [
             'captcha_key'  => $this->captchaKey,
             'captcha_code' => $this->captchaCode,
@@ -244,8 +248,8 @@ class GridCaptcha
     {
         //初始化参数
         $space_x = $space_y = $start_x = $start_y = $line_x = 0;
-        $pic_w   = intval($this->captchaImageWide / 3);
-        $pic_h   = intval($this->captchaImageHigh / 3);
+        $pic_w   = (int)($this->captchaImageWide / 3);
+        $pic_h   = (int)($this->captchaImageHigh / 3);
 
         //设置背景
         $background = imagecreatetruecolor($this->captchaImageWide, $this->captchaImageHigh);
@@ -264,11 +268,9 @@ class GridCaptcha
             $gd_resource = imagecreatefromstring(
                 Cache::remember(
                     "$this->cacheKey:file:$path",
-                    604800,
                     function () use ($path) {
                         return file_get_contents($path);
-                    }
-                )
+                    }, 604800)
             );
             imagecopyresized(
                 $background,
@@ -299,14 +301,14 @@ class GridCaptcha
     protected function getImageFile()
     {
         //获取验证码目录下面的图片
-        $image_path = glob($this->captchaImagePath . '\*');
+        $image_path = glob($this->captchaImagePath . '/*');
         $image_file = [];
         foreach ($image_path as $file) {
-            $image_file[pathinfo($file)['basename'] ?? 'null'] = glob("$file\*.$this->imageSuffix");
+            $image_file[pathinfo($file)['basename'] ?? 'null'] = glob("$file/*.$this->imageSuffix");
         }
         unset($image_file['null']);
         if (empty($image_file)) {
-            throw new Exception('找不到验证码图片');
+            throw new \Exception('找不到验证码图片');
         }
         return $image_file;
     }
