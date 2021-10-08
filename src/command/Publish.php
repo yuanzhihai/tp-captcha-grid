@@ -23,12 +23,12 @@ class Publish extends Command
     public function execute(Input $input, Output $output)
     {
         //获取默认配置文件
-        $content = '/../../../think-auth/src/config';
-        $resources = '/../../../think-auth/src/resources';
-        $storage = '/../../../think-auth/src/storage';
+        $content   = __DIR__ . '/../../../tp-captcha-grid/src/config';
+        $resources = __DIR__ . '/../../../tp-captcha-grid/src/resources';
+        $storage   = __DIR__ . '/../../../tp-captcha-grid/src/storage';
         $this->xCopy($content, config_path());
         $this->xCopy($resources, base_path());
-        $this->xCopy($storage, base_path('storage'));
+        $this->xCopy($storage, public_path('storage'));
         $output->writeln('publish ok');
     }
 
@@ -49,7 +49,7 @@ class Publish extends Command
             if (($entry !== ".") && ($entry !== "..")) {
                 if (is_dir($source . "/" . $entry)) {
                     if ($child) {
-                        copy($source . "/" . $entry, $destination . "/" . $entry, $child);
+                        $this->xCopy($source . "/" . $entry, $destination . "/" . $entry, $child);
                     }
                 } else {
                     copy($source . "/" . $entry, $destination . "/" . $entry);

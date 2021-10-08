@@ -4,7 +4,7 @@ return [
     //生成验证码图片配置
     'image'   => [
         //验证码图片路径
-        'path'    => env('GRID_CAPTCHA_IMAGE_PATH', public_path('gridcaptcha\image')),
+        'path'    => env('GRID_CAPTCHA_IMAGE_PATH', public_path('storage\gridcaptcha\image')),
         //从验证码图片路径中获取的文件后缀名
         'suffix'  => env('GRID_CAPTCHA_IMAGE_SUFFIX', 'jpg'),
         //生成验证码质量
