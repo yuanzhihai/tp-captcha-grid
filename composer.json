@@ -1,0 +1,44 @@
+{
+    "name": "yzh52521/tp-captcha-grid",
+    "description": "Thinkphp quickly creates a verification code tool similar to Google verification code",
+    "keywords": [
+        "google-captcha",
+        "google captcha",
+        "recaptcha",
+        "captcha",
+        "Captcha",
+        "Security",
+        "Thinkphp",
+        "Thinkphp6",
+        "Thinkphp6 captcha",
+        "Thinkphp Captcha"
+    ],
+    "homepage": "https://github.com/yzh52521/tp-captcha-grid",
+    "require": {
+        "php": ">=7.1",
+        "ext-gd": "*"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "yzh52521\\Think": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "yzh52251",
+            "email": "396751927@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "extra": {
+        "think": {
+           "config":{
+                   "gridcaptcha": "src/config/gridcaptcha.php"
+                 }
+        }
+    }
+}
