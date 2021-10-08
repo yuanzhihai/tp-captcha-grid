@@ -168,7 +168,7 @@ class TestController extends Controller
     /**
      * 辅助函数方式效验
      * @param Request $request
-     * @return array|false|\think\Response\JsonResponse
+     * @return array|false|\think\response\Json
      */
     public function helpersCheck(Request $request)
     {
@@ -192,7 +192,7 @@ class TestController extends Controller
     /**
      * 门面方式效验
      * @param Request $request
-     * @return array|false|\think\Response\JsonResponse
+     * @return array|false|\think\response\Json
      */
     public function facadeCheck(Request $request)
     {
@@ -200,14 +200,14 @@ class TestController extends Controller
          * 传参效验
          */
         if ($captcha_data = \yzh52521\captcha\facade\GridCaptcha::check('Qh8kHYF4C....', '1540') === false) {
-            return response()->json(['message' => '验证码错误', 'code' => 401]);
+            return json(['message' => '验证码错误', 'code' => 401]);
         }
 
         /**
          * 传递 Request 对象效验
          */
         if ($captcha_data = \yzh52521\captcha\facade\GridCaptcha::checkRequest($request)) {
-            return response()->json(['message' => '验证码错误', 'code' => 401]);
+            return json(['message' => '验证码错误', 'code' => 401]);
         }
 
         return $captcha_data;
@@ -216,7 +216,7 @@ class TestController extends Controller
     /**
      * 对象方式效验
      * @param Request $request
-     * @return array|false|\think\Response\JsonResponse
+     * @return array|false|\think\response\Json
      */
     public function objectCheck(Request $request)
     {
@@ -225,14 +225,14 @@ class TestController extends Controller
          * 传参效验
          */
         if ($captcha_data = $captcha->check('Qh8kHYF4C....', '1540') === false) {
-            return response()->json(['message' => '验证码错误', 'code' => 401]);
+            return json(['message' => '验证码错误', 'code' => 401]);
         }
 
         /**
          * 传递 Request 对象效验
          */
         if ($captcha_data = $captcha->checkRequest($request)) {
-            return response()->json(['message' => '验证码错误', 'code' => 401]);
+            return json(['message' => '验证码错误', 'code' => 401]);
         }
 
         return $captcha_data;
