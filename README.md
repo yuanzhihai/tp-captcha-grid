@@ -1,7 +1,7 @@
 # tp-gridCaptcha
 thinkphp6 quickly creates a verification code tool similar to Google verification code
 
-laravel 快速创建一个类似于 Google 点图验证码的本地验证码扩展
+thinkphp6 快速创建一个类似于 Google 点图验证码的本地验证码扩展
 
 ## 介绍
 
