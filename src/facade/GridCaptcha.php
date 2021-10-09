@@ -8,7 +8,7 @@ use think\Request;
  * @method static false|array check(string $captchaKey, string $captchaCode, bool $checkAndDelete = true)
  * @method static false|array checkRequest(Request $request, bool $checkAndDelete = true)
  * @method static string getCaptchaCode()
- * @see yzh52521\Think\GridCaptcha
+ * @see \yzh52521\captcha\GridCaptcha
  */
 class GridCaptcha extends \think\Facade
 {
