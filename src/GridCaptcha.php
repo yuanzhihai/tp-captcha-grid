@@ -188,17 +188,17 @@ class GridCaptcha
                 $this->captchaKeyCodeString => 'required|integer|between:1,4',
             ]
         );
-        if (!$validate->check($request)) {
+        if (!$validate->check($request->param())) {
             return false;
         }
-        return $this->check($request[$this->captchaKeyString], $request[$this->captchaKeyCodeString], $checkAndDelete);
+        return $this->check($request->param($this->captchaKeyString), $request->param($this->captchaKeyCodeString), $checkAndDelete);
     }
 
     /**
      * 生成九宫格验证码图片
      * @return array
      */
-    protected function generateIntCodeImg()
+    protected function generateIntCodeImg(): array
     {
         //随机获取正确的验证码
         $correct_str  = array_rand($this->imageFile, 1);
@@ -250,7 +250,7 @@ class GridCaptcha
      * @param array $imgPath
      * @return string
      */
-    protected function combinationCaptchaImg(array $imgPath)
+    protected function combinationCaptchaImg(array $imgPath): string
     {
         //初始化参数
         $space_x = $space_y = $start_x = $start_y = $line_x = 0;
@@ -304,9 +304,9 @@ class GridCaptcha
     /**
      * 获取验证码图片
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
-    protected function getImageFile()
+    protected function getImageFile(): array
     {
         //获取验证码目录下面的图片
         $image_path = glob($this->captchaImagePath . '/*');
@@ -325,7 +325,7 @@ class GridCaptcha
      * 获取验证码
      * @return string
      */
-    public function getCaptchaCode()
+    public function getCaptchaCode(): string
     {
         return $this->captchaCode;
     }
