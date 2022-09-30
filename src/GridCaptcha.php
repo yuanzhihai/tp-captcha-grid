@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare( strict_types = 1 );
 
 namespace yzh52521\captcha;
 
@@ -101,7 +101,7 @@ class GridCaptcha
     public function __construct()
     {
         //初始化配置
-        $config                 = config('gridcaptcha');
+        $config                 = config( 'gridcaptcha' );
         $this->captchaImagePath = $config['image']['path'];
         $this->imageSuffix      = $config['image']['suffix'];
         $this->imageQuality     = $config['image']['quality'];
@@ -122,7 +122,7 @@ class GridCaptcha
      */
     public function get(array $captchaData = []): array
     {
-        return $this->make($captchaData);
+        return $this->make( $captchaData );
     }
 
     /**
@@ -133,16 +133,16 @@ class GridCaptcha
     protected function make(array $captchaData = []): array
     {
         $this->captchaData = $captchaData;
-        $this->captchaCode = substr(str_shuffle('012345678'), 0, 4);
-        $this->captchaKey  = Str::random($this->captchaKeyLength);
-        $this->imageFile   = Cache::remember("$this->cacheKey:path", function () {
+        $this->captchaCode = substr( str_shuffle( '012345678' ),0,4 );
+        $this->captchaKey  = Str::random( $this->captchaKeyLength );
+        $this->imageFile   = Cache::remember( "$this->cacheKey:path",function () {
             return $this->getImageFile();
-        },                                   604800);
-        Cache::set("$this->cacheKey:data:$this->captchaKey", [
+        },604800 );
+        Cache::set( "$this->cacheKey:data:$this->captchaKey",[
             'captcha_key'  => $this->captchaKey,
             'captcha_code' => $this->captchaCode,
             'captcha_data' => $captchaData,
-        ],         $this->captchaValidity);
+        ],$this->captchaValidity );
         return $this->generateIntCodeImg();
     }
 
@@ -153,20 +153,20 @@ class GridCaptcha
      * @param bool $checkAndDelete
      * @return false|array
      */
-    public function check(string $captchaKey, string $captchaCode, bool $checkAndDelete = true)
+    public function check(string $captchaKey,string $captchaCode,bool $checkAndDelete = true)
     {
         //判断是否获取到
         $captcha_data = $checkAndDelete
-            ? Cache::pull("$this->cacheKey:data:" . $captchaKey, false)
-            : Cache::get("$this->cacheKey:data:" . $captchaKey, false);
+            ? Cache::pull( "$this->cacheKey:data:".$captchaKey,false )
+            : Cache::get( "$this->cacheKey:data:".$captchaKey,false );
         if ($captcha_data === false || $captcha_data === null) {
             return false;
         }
         //判断验证码是正确
         if (!empty(
         array_diff(
-            str_split($captcha_data['captcha_code']),
-            str_split($captchaCode)
+            str_split( $captcha_data['captcha_code'] ),
+            str_split( $captchaCode )
         )
         )) {
             return false;
@@ -180,7 +180,7 @@ class GridCaptcha
      * @param bool $checkAndDelete 效验之后是否删除
      * @return false|array
      */
-    public function checkRequest(Request $request, bool $checkAndDelete = true)
+    public function checkRequest(Request $request,bool $checkAndDelete = true)
     {
         $validate = validate(
             [
@@ -188,10 +188,10 @@ class GridCaptcha
                 $this->captchaKeyCodeString => 'required|integer|between:1,4',
             ]
         );
-        if (!$validate->check($request->param())) {
+        if (!$validate->check( $request->param() )) {
             return false;
         }
-        return $this->check($request->param($this->captchaKeyString), $request->param($this->captchaKeyCodeString), $checkAndDelete);
+        return $this->check( $request->param( $this->captchaKeyString ),$request->param( $this->captchaKeyCodeString ),$checkAndDelete );
     }
 
     /**
@@ -201,38 +201,38 @@ class GridCaptcha
     protected function generateIntCodeImg(): array
     {
         //随机获取正确的验证码
-        $correct_str  = array_rand($this->imageFile, 1);
+        $correct_str  = array_rand( $this->imageFile,1 );
         $correct_path = $this->imageFile[$correct_str];
-        $correct_key  = array_rand($correct_path, 4);
+        $correct_key  = array_rand( $correct_path,4 );
         //移除正确的验证码 [方便后面取错误验证码 , 不会重复取到正确的]
-        unset($this->imageFile[$correct_str]);
+        unset( $this->imageFile[$correct_str] );
 
         //循环获取正确的验证码图片
         $correct_img = [];
-        foreach ($correct_key as $key) {
+        foreach ( $correct_key as $key ) {
             $correct_img[] = $correct_path[$key];
         }
 
         //循环获取错误的验证码
-        $error_key = array_rand($this->imageFile, 5);
+        $error_key = array_rand( $this->imageFile,5 );
         $error_img = [];
-        foreach ($error_key as $path_key) {
+        foreach ( $error_key as $path_key ) {
             $error_path  = $this->imageFile[$path_key];
-            $error_img[] = $error_path[array_rand($error_path, 1)];
+            $error_img[] = $error_path[array_rand( $error_path,1 )];
         }
 
         //对全部验证码图片打乱排序
-        $code_array  = str_split($this->captchaCode);
+        $code_array  = str_split( $this->captchaCode );
         $results_img = [];
-        for ($i = 0; $i < 9; $i++) {
-            $results_img[] = in_array($i, $code_array)
-                ? array_shift($correct_img)
-                : array_shift($error_img);
+        for ( $i = 0; $i < 9; $i++ ) {
+            $results_img[] = in_array( $i,$code_array )
+                ? array_shift( $correct_img )
+                : array_shift( $error_img );
         }
 
         //处理提示文本
         $trans_key = "grid-captcha.$correct_str";
-        $hint      = lang($trans_key);
+        $hint      = lang( $trans_key );
         if ($trans_key == $hint) {
             $hint = $correct_str;
         }
@@ -241,7 +241,7 @@ class GridCaptcha
         return [
             'hint'        => $hint,
             'captcha_key' => $this->captchaKey,
-            'image'       => $this->combinationCaptchaImg($results_img),
+            'image'       => $this->combinationCaptchaImg( $results_img ),
         ];
     }
 
@@ -254,16 +254,16 @@ class GridCaptcha
     {
         //初始化参数
         $space_x = $space_y = $start_x = $start_y = $line_x = 0;
-        $pic_w   = (int)($this->captchaImageWide / 3);
-        $pic_h   = (int)($this->captchaImageHigh / 3);
+        $pic_w   = (int)( $this->captchaImageWide / 3 );
+        $pic_h   = (int)( $this->captchaImageHigh / 3 );
 
         //设置背景
-        $background = imagecreatetruecolor($this->captchaImageWide, $this->captchaImageHigh);
-        $color      = imagecolorallocate($background, 255, 255, 255);
-        imagefill($background, 0, 0, $color);
-        imageColorTransparent($background, $color);
+        $background = imagecreatetruecolor( $this->captchaImageWide,$this->captchaImageHigh );
+        $color      = imagecolorallocate( $background,255,255,255 );
+        imagefill( $background,0,0,$color );
+        imageColorTransparent( $background,$color );
 
-        foreach ($imgPath as $key => $path) {
+        foreach ( $imgPath as $key => $path ) {
             $keys = $key + 1;
             //图片换行
             if ($keys == 4 || $keys == 7) {
@@ -275,7 +275,7 @@ class GridCaptcha
                 Cache::remember(
                     "$this->cacheKey:file:$path",
                     function () use ($path) {
-                        return file_get_contents($path);
+                        return file_get_contents( $path );
                     },
                     604800
                 )
@@ -289,16 +289,16 @@ class GridCaptcha
                 0,
                 $pic_w,
                 $pic_h,
-                imagesx($gd_resource),
-                imagesy($gd_resource)
+                imagesx( $gd_resource ),
+                imagesy( $gd_resource )
             );
             $start_x = $start_x + $pic_w + $space_x;
         }
         ob_start();
-        imagejpeg($background, null, $this->imageQuality);
+        imagejpeg( $background,null,$this->imageQuality );
         //释放图片资源
-        imagedestroy($background);
-        return "data:image/jpeg;base64," . base64_encode(ob_get_clean());
+        imagedestroy( $background );
+        return "data:image/jpeg;base64,".base64_encode( ob_get_clean() );
     }
 
     /**
@@ -309,14 +309,14 @@ class GridCaptcha
     protected function getImageFile(): array
     {
         //获取验证码目录下面的图片
-        $image_path = glob($this->captchaImagePath . '/*');
+        $image_path = glob( $this->captchaImagePath.'/*' );
         $image_file = [];
-        foreach ($image_path as $file) {
-            $image_file[pathinfo($file)['basename'] ?? 'null'] = glob("$file/*.$this->imageSuffix");
+        foreach ( $image_path as $file ) {
+            $image_file[pathinfo( $file )['basename'] ?? 'null'] = glob( "$file/*.$this->imageSuffix" );
         }
-        unset($image_file['null']);
-        if (empty($image_file)) {
-            throw new \Exception('找不到验证码图片');
+        unset( $image_file['null'] );
+        if (empty( $image_file )) {
+            throw new \Exception( '找不到验证码图片' );
         }
         return $image_file;
     }
