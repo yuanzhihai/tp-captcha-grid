@@ -14,6 +14,6 @@ class GridCaptcha extends \think\Facade
 {
     public static function getFacadeClass()
     {
-        return \yzh52521\captcha\GridCaptcha::class;
+        return 'GridCaptcha';
     }
 }

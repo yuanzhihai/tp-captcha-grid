@@ -3,7 +3,6 @@
 namespace yzh52521\captcha;
 
 use yzh52521\captcha\command\Publish;
-use yzh52521\captcha\GridCaptcha;
 
 class Service extends \think\Service
 {
